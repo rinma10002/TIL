@@ -78,7 +78,7 @@ print(singer1.name) # iu
     
     `def instance_method(self, arg1, …)` 
 
-## 클래스 메서드 Class Method
+## 2.클래스 메서드
 클래스가 호출하는 메서드 
 
 ### 클래스 메서드 구조
@@ -92,7 +92,7 @@ def class_method(cls, args, …) :
 - `@classmethod` : 데코레이터를 사용하여 정의
 - `cls` : 호출 시, 첫번째 인자로 해당 메서드를 호출하는 클래스가 전달됨, 전달될 때 사용하는 매개변수 이름 = `cls` (생성자 메서드에서 self를 받는것과 비슷하다고 보면 됨)
 
-## 스태틱 메서드 Static Method
+## 3.스태틱 메서드
 - 클래스 메서드도 아니고 인스턴스 메서드도 아닌 상관없이 독립적으로 동작하는 메서드
 - `@staticmethod` 가 맨처음에 붙음
 ### 스테틱 메서드 구조
