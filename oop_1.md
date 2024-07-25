@@ -150,3 +150,137 @@ my_function()
 함수 실행 후
 '''
 ```
+## 상속
+### 개요
+#### 상속 `Inheritance`
+- 기존 클래스의 속성과 메서드를 물려받아 새로운 하위 클래스를 생성하는 것
+
+#### 상속이 필요한 이유
+1. 코드 재사용
+    - 상속을 통해 기존 클래스의 속성과 메서드를 재사용할 수 있음
+    - 새로운 클래스를 작성할 때 기존 클래스의 기능을 그대로 활용할 수 있으며, 중복된 코드를 줄일 수 있음
+2. 계층 구조
+    - 상속을 통해 클래스들 간의 계층 구조를 형성할 수 있음
+    - 부모 클래스와 자식 클래스 간의 관계를 표현하고, 더 구체적인 클래스를 만들 수 있음
+3. 유지 보수의 용이성
+    - 상속을 통해 기존 클래스의 수정이 필요한 경우, 해당 클래스만 수정하면 되므로 유지 보수가 용이해짐 
+    - 코드의 일관성을 유지하고, 수정이 필요한 범위를 최소화할 수 있음
+
+### 클래스 상속
+```py
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def talk(self):  # 메서드 재사용
+        print(f'반갑습니다. {self.name}입니다.')
+
+
+class Professor(Person):
+    def __init__(self, name, age, department):
+        self.name = name
+        self.age = age
+        self.department = department
+
+
+class Student(Person):
+    def __init__(self, name, age, gpa):
+        self.name = name
+        self.age = age
+        self.gpa = gpa
+
+
+p1 = Professor('박교수', 49, '컴퓨터공학과')
+s1 = Student('김학생', 20, 3.5)
+
+# 부모 Person 클래스의 talk 메서드를 활용
+p1.talk() # 반갑습니다. 박교수입니다.
+
+# 부모 Person 클래스의 talk 메서드를 활용
+s1.talk() # 반갑습니다. 김학생입니다.
+```
+
+### 다중 상속
+#### 다중 상속 정의
+- 둘 이상의 상위 클래스로부터 여러 행동이나 특징을 상속받을 수 있는 것
+- 상속받은 모든 클래스의 요소를 활용 가능함
+- 중복된 속성이나 메서드가 있는 경우 <span style='color:crimson;'>상속 순서에 의해 결정</span>됨
+
+#### 다중 상속 예시
+```py
+class Person:
+    def __init__(self, name):
+        self.name = name
+
+    def greeting(self):
+        return f'안녕, {self.name}'
+
+
+class Mom(Person):
+    gene = 'XX'
+
+    def swim(self):
+        return '엄마가 수영'
+
+
+class Dad(Person):
+    gene = 'XY'
+
+    def walk(self):
+        return '아빠가 걷기'
+
+
+class FirstChild(Dad, Mom):
+    def swim(self):
+        return '첫째가 수영'
+
+    def cry(self):
+        return '첫째가 응애'
+
+
+baby1 = FirstChild('아가')
+print(baby1.cry()) # 첫째가 응애
+print(baby1.swim()) # 첫째가 수영
+print(baby1.walk()) # 아빠가 걷기
+print(baby1.gene) # XY
+```
+
+#### MRO (Method Resolution Order)
+- 메서드 결정 순서
+#### `super()`
+- 부모 클래스 객체를 반환하는 내장 함수
+- 다중 상속 시 MRO를 기반으로 현재 클래스가 상속하는 모든 부모 클래스 중 다음에 호출될 메서드를 결정하여 자동으로 호출
+
+#### `mro()` 사용 예시
+
+  ```python
+  class A:
+      def __init__(self):
+          print('A Constructor')
+
+  class B(A):
+      def __init__(self):
+          super().__init__()
+          print('B Constructor')
+
+  class C(A):
+      def __init__(self):
+          super().__init__()
+          print('C Constructor')
+          
+  class D(B, C):
+      def __init__(self):
+          super().__init__()
+          print('D Constructor')
+
+  print(D.mro())
+  ```
+
+  ##### super의 2 가지 사용 사례
+1. 단일 상속 구조
+    - 명시적으로 이름을 지정하지 않고 부모 클래스를 참조할 수 있으므로, 코드를 더 유지 관리하기 쉽게 만들 수 있음
+    - 클래스 이름이 변경되거나 부모 클래스가 교체되어도 super()를 사용하면 코드 수정이 더 적게 필요
+2. 다중 상속 구조
+    - MRO를 따른 메서드 호출
+    - 복잡한 다중 상속 구조에서 발생할 수 있는 문제를 방지
